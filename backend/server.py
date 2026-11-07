@@ -2,9 +2,17 @@ import sqlite3
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 DB_PATH = Path(__file__).parent / "tasks.db"
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5500"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 
 def get_connection():
     conn = sqlite3.connect(DB_PATH)
@@ -67,3 +75,4 @@ def delete_task(task_id: int):
         raise HTTPException(status_code=404, detail="Task not found")
     else:
         return {"deleted": task_id}
+
