@@ -25,7 +25,19 @@ async function loadTasks() {
         description.textContent = task.description ?? ""
 
         body.append(title, description)
-        li.append(badge, body)
+        const actions = document.createElement("div")
+        actions.className = "task-actions"
+
+        const deleteBtn = document.createElement("button")
+        deleteBtn.className = "delete"
+        deleteBtn.textContent = "Delete"
+        deleteBtn.addEventListener("click", async () => {
+            await fetch(`${API_URL}/tasks/${task.id}`, { method: "DELETE" })
+            await loadTasks()
+        })
+
+        actions.append(deleteBtn)
+        li.append(badge, body, actions)
         taskList.append(li)
     }
 }
