@@ -28,6 +28,22 @@ async function loadTasks() {
         const actions = document.createElement("div")
         actions.className = "task-actions"
 
+        const doneBtn = document.createElement("button")
+        doneBtn.textContent = task.done ? "Undo" : "Done"
+        doneBtn.addEventListener("click", async () => {
+            await fetch(`${API_URL}/tasks/${task.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: task.title,
+                    description: task.description,
+                    priority: task.priority,
+                    done: !task.done,
+                }),
+            })
+            await loadTasks()
+        })
+
         const deleteBtn = document.createElement("button")
         deleteBtn.className = "delete"
         deleteBtn.textContent = "Delete"
@@ -36,7 +52,7 @@ async function loadTasks() {
             await loadTasks()
         })
 
-        actions.append(deleteBtn)
+        actions.append(doneBtn, deleteBtn)
         li.append(badge, body, actions)
         taskList.append(li)
     }
