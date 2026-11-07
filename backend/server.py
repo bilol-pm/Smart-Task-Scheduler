@@ -36,6 +36,26 @@ def create_task(task: TaskCreate):
     conn.close()
     return {"id": new_id, "title": task.title}
 
+class TaskUpdate(BaseModel):
+    title: str
+    description: str | None = None
+    priority: int
+    done: bool
+@app.put("/tasks/{task_id}")
+def update_task(task_id: int, task: TaskUpdate):
+    conn = get_connection()
+    cur = conn.execute(
+        "UPDATE tasks SET title = ?, description = ?, priority = ?, done = ? WHERE id = ?",
+        (task.title, task.description, task.priority, task.done, task_id),
+    )
+    conn.commit()
+    updated = cur.rowcount
+    conn.close()
+    if updated == 0:
+        raise HTTPException(status_code=404, detail="Task not found")
+    else:
+        return {"updated": task_id}
+
 @app.delete("/tasks/{task_id}")
 def delete_task(task_id: int):
     conn = get_connection()
