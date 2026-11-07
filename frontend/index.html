@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Scheduler</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="app">
+        <header class="app-header">
+            <h1>Smart Task Scheduler</h1>
+            <p class="subtitle">Sorted by priority: 1 is the most important</p>
+        </header>
+
+        <form id="taskForm" class="task-form">
+            <input type="text" id="taskTitle" placeholder="Task title" autocomplete="off" required>
+            <input type="text" id="taskDescription" placeholder="Description (optional)" autocomplete="off">
+            <div class="form-row">
+                <input type="number" id="taskPriority" placeholder="Priority (1, 2, 3...)" min="1" required>
+                <button type="submit">Add task</button>
+            </div>
+        </form>
+
+        <p id="message" class="message" hidden></p>
+
+        <ul id="taskList" class="task-list"></ul>
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
