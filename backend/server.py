@@ -1,6 +1,6 @@
 import sqlite3
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 DB_PATH = Path(__file__).parent / "tasks.db"
@@ -35,3 +35,15 @@ def create_task(task: TaskCreate):
     new_id = cur.lastrowid
     conn.close()
     return {"id": new_id, "title": task.title}
+
+@app.delete("/tasks/{task_id}")
+def delete_task(task_id: int):
+    conn = get_connection()
+    cur = conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+    conn.commit()
+    deleted = cur.rowcount
+    conn.close()
+    if deleted == 0:
+        raise HTTPException(status_code=404, detail="Task not found")
+    else:
+        return {"deleted": task_id}
