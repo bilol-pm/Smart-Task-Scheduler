@@ -19,6 +19,20 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def init_db():
+    conn = get_connection()
+    conn.execute("""CREATE TABLE IF NOT EXISTS tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT,
+        priority INTEGER NOT NULL,
+        done INTEGER NOT NULL DEFAULT 0
+    )""")
+    conn.commit()
+    conn.close()
+
+init_db()
+
 @app.get("/tasks")
 def get_tasks():
     conn = get_connection()
