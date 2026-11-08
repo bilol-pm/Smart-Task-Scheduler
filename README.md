@@ -2,6 +2,8 @@
 
 A full-stack to-do app: an HTML/CSS/JavaScript frontend, a FastAPI backend and a SQLite database. Tasks are sorted by priority (1 is the most important).
 
+![To-Do App screenshot](docs/screenshot.png)
+
 ## Features
 
 - Add tasks with a title, description and priority
